@@ -1,0 +1,18 @@
+# Core dependencies
+speedtest-cli>=2.1.3    # For network speed testing
+geopy>=2.4.1           # For geocoding and distance calculations
+
+# Type hints support
+typing-extensions>=4.9.0
+
+# Statistics and data handling
+statistics>=1.0.3.5
+
+# Logging and debugging
+python-json-logger>=2.0.7  # For structured JSON logging
+
+# Development dependencies
+pytest>=8.0.0         # For running tests
+black>=24.1.1         # For code formatting
+flake8>=7.0.0         # For code linting
+mypy>=1.8.0          # For type checking

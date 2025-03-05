@@ -49,7 +49,7 @@ A comprehensive tool for testing and comparing Mullvad VPN server performance. T
 
 2. Install Python dependencies:
    ```bash
-   pip install speedtest-cli geopy
+   pip install -r requirements.txt
    ```
 
 3. Install and configure Mullvad VPN client:

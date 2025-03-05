@@ -22,7 +22,7 @@ LIJIANG_COORDS = (26.8721, 100.2299)  # Default coordinates for Lijiang
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),
@@ -227,12 +227,12 @@ class MullvadTester:
             servers.sort(key=lambda x: x.distance_km)
 
             # Log sorted servers with locations and distances
-            logger.info("\nSorted servers by distance from reference point:")
-            logger.info(f"Reference: {self.reference_location} at {self.reference_coords}")
-            logger.info("-" * 60)
+            logger.debug("\nSorted servers by distance from reference point:")
+            logger.debug(f"Reference: {self.reference_location} at {self.reference_coords}")
+            logger.debug("-" * 60)
             for server in servers:
-                logger.info(f"{server.city}, {server.country}: {server.distance_km:.0f} km ({server.latitude:.4f}, {server.longitude:.4f})")
-            logger.info("-" * 60)
+                logger.debug(f"{server.city}, {server.country}: {server.distance_km:.0f} km ({server.latitude:.4f}, {server.longitude:.4f})")
+            logger.debug("-" * 60)
 
             logger.info(f"Successfully parsed and sorted {len(servers)} servers by distance")
             return servers

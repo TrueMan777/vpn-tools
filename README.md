@@ -4,7 +4,7 @@ A collection of Python-based tools for testing, optimizing, and managing VPN con
 
 ## Available Tools
 
-### 1. Mullvad Speed Test (`mullvad-speed-test.py`)
+### Mullvad Speed Test (`mullvad-speedtest.py`)
 
 A comprehensive tool for testing and comparing Mullvad VPN server performance. This tool helps you find the best performing Mullvad servers based on various metrics including download speed, upload speed, latency, and reliability.
 
@@ -20,21 +20,24 @@ A comprehensive tool for testing and comparing Mullvad VPN server performance. T
   - Connection time
 - Performs MTR (My TraceRoute) tests
 - Generates detailed reports with server performance metrics
-- Provides summaries of:
+- Provides comprehensive server rankings:
   - Top 5 servers by distance
-  - Top 5 servers by connection speed
+  - Top 5 servers by connection time
   - Top 5 servers by download speed
   - Top 5 servers by upload speed
   - Top 5 servers by latency
   - Top 5 servers by reliability
   - Best overall servers (weighted scoring)
+- Optimized server selection algorithm
+- Enhanced visual feedback with multi-level color gradient progress bars
+- Detailed breakdowns of selected servers by country
 - Supports both WireGuard and OpenVPN protocols
 - Detailed logging for troubleshooting
 - Stores test results in SQLite database for historical analysis
 
 ## Prerequisites
 
-- Python 3.12+
+- Python 3.6+ (3.12+ recommended)
 - Mullvad VPN client with CLI access
 - speedtest-cli
 - mtr (My TraceRoute)
@@ -77,14 +80,14 @@ A comprehensive tool for testing and comparing Mullvad VPN server performance. T
 
 Basic usage:
 ```bash
-sudo python mullvad-speed-test.py
+sudo python mullvad-speedtest.py
 ```
 
 This will run in interactive mode, guiding you through the process.
 
 Advanced usage with options:
 ```bash
-sudo python mullvad-speed-test.py --location "Paris, France" --protocol WireGuard --max-servers 20
+sudo python mullvad-speedtest.py --location "Paris, France" --protocol WireGuard --max-servers 20
 ```
 
 ## Command-line Arguments
@@ -93,10 +96,14 @@ sudo python mullvad-speed-test.py --location "Paris, France" --protocol WireGuar
 |----------|-------------|---------|
 | `--location` | Reference location (format: "City, Country") | "Beijing, Beijing, China" |
 | `--protocol` | VPN protocol to test ("WireGuard" or "OpenVPN") | "WireGuard" |
-| `--max-servers` | Maximum number of servers to test | 20 |
+| `--max-servers` | Maximum number of servers to test | 15 |
+| `--max-servers-hard-limit` | Hard limit on number of servers to test | 45 |
 | `--max-distance` | Maximum distance (km) for server selection | No limit |
 | `--default-lat` | Default latitude if geocoding fails | None |
 | `--default-lon` | Default longitude if geocoding fails | None |
+| `--min-download-speed` | Minimum download speed in Mbps for viable servers | 3.0 |
+| `--connection-timeout` | Default connection timeout in seconds | 20.0 |
+| `--min-viable-servers` | Minimum number of viable servers required | 8 |
 | `--interactive` | Enable interactive mode | Auto-detected |
 | `--non-interactive` | Disable interactive mode | - |
 | `--verbose` | Enable verbose logging | Disabled |
@@ -106,22 +113,27 @@ sudo python mullvad-speed-test.py --location "Paris, France" --protocol WireGuar
 
 ### Find Best Servers Near Your Location
 ```bash
-sudo python mullvad-speed-test.py --interactive
+sudo python mullvad-speedtest.py --interactive
 ```
 
 ### Test Servers Near a Specific Location
 ```bash
-sudo python mullvad-speed-test.py --location "Tokyo, Japan" --max-servers 15
+sudo python mullvad-speedtest.py --location "Tokyo, Japan" --max-servers 15
 ```
 
 ### Testing Within a Specific Distance Range
 ```bash
-sudo python mullvad-speed-test.py --location "Berlin, Germany" --max-distance 2000
+sudo python mullvad-speedtest.py --location "Berlin, Germany" --max-distance 2000
 ```
 
 ### Testing with OpenVPN Protocol
 ```bash
-sudo python mullvad-speed-test.py --protocol OpenVPN --max-servers 10
+sudo python mullvad-speedtest.py --protocol OpenVPN --max-servers 10
+```
+
+### Testing with Custom Performance Criteria
+```bash
+sudo python mullvad-speedtest.py --min-download-speed 5.0 --min-viable-servers 10
 ```
 
 ## Supporting Modules
@@ -137,7 +149,9 @@ After running the tests, the script generates a detailed report in a log file wi
 2. **Individual Server Results**: Detailed performance metrics for each tested server
 3. **Summary Section**: 
    - Top 5 servers by distance
+   - Top 5 servers by connection time
    - Top 5 servers by download speed
+   - Top 5 servers by upload speed
    - Top 5 servers by latency
    - Top 5 servers by reliability
    - Best overall servers (weighted scoring)
@@ -149,11 +163,11 @@ The script also provides a real-time summary in the terminal and offers to open 
 
 1. **Connection Calibration**: The script first calibrates by testing connection times to servers on different continents
 2. **Initial Testing**: Tests the closest servers to your location
-3. **Adaptive Search**: If enough viable servers aren't found, searches on other continents
+3. **Adaptive Search**: If enough viable servers aren't found, searches for servers on other continents with detailed country breakdowns
 4. **Results Analysis**: Calculates comprehensive metrics and generates rankings
 5. **Report Generation**: Creates detailed logs and summaries
 
-A server is considered "viable" if it establishes a connection successfully and provides a download speed above the minimum threshold (5 Mbps by default).
+A server is considered "viable" if it establishes a connection successfully and provides a download speed above the minimum threshold (3 Mbps by default).
 
 ## Troubleshooting
 

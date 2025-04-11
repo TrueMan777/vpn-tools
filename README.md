@@ -30,7 +30,6 @@ A comprehensive tool for testing and comparing Mullvad VPN server performance. T
 #### Prerequisites
 - Python 3.12+
 - Mullvad VPN client with CLI access
-- speedtest-cli
 - mtr (My TraceRoute)
 
 #### Installation
@@ -66,8 +65,8 @@ sudo python mullvad_speed_test.py
 Optional arguments:
 ```bash
 --location "City, Country"  # Reference location for distance calculation
---protocol [WireGuard|OpenVPN]  # VPN protocol to test
---max-servers N  # Maximum number of servers to test
+--protocol [WireGuard|OpenVPN]  # VPN protocol to test, default WireGuard
+--max-servers N  # Maximum number of servers to test. default 50
 ```
 
 ### Supporting Modules
